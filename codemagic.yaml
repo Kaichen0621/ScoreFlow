@@ -1,0 +1,27 @@
+workflows:
+  ios-capacitor-workflow:
+    name: ScoreFlow iPadOS Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      node: latest
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+    scripts:
+      - name: Install dependencies
+        script: | 
+          npm install
+      - name: Add iOS platform
+        script: |
+          npx cap add ios
+      - name: Capacitor Sync
+        script: |
+          npx cap sync ios
+      - name: Build iOS App
+        script: |
+          npx cap build ios --no-open
+    artifacts:
+      - output/ios/build/*.ipa
